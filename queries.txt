@@ -1,0 +1,61 @@
+-- Creating user details table
+create table user_details(user_id number generated always as identity primary key,username varchar(255) not null,email varchar(255) not null UNIQUE,password varchar(255) not null);
+
+insert into USER_DETAILS (username, email, password) values ('Hrishikesh', 'hrishikesh@gmail.com', 'hrishikesh');
+insert into USER_DETAILS (username, email, password) values ('Amay', 'amay@gmail.com', 'amay');
+
+select * from user_details;
+
+-- Creating chat_info table
+create table chat_info(
+    id number generated always as identity primary key,
+    chat_id varchar(255) not null UNIQUE,
+    chat_title varchar(255) not null,
+    user_id number not null,
+
+    constraint user_id_fk foreign key (user_id) references user_details(user_id)
+);
+
+insert into chat_info(chat_id, chat_title, user_id) values('chat-2', 'Backend Developer(1).pdf', 1);
+insert into chat_info(chat_id, chat_title, user_id) values('chat-3', 'Frontend Developer.pdf', 1);
+
+select * from chat_info;
+
+-- drop table chat_info;
+
+-- Creating chat_contents Table
+create table chat_contents(
+    id number generated always as identity primary key,
+    role varchar(255) not null,
+    content clob not null,
+    chat_id varchar(255) not null,
+
+    constraint chat_id_fk foreign key(chat_id) references chat_info(chat_id)
+);
+
+insert into CHAT_CONTENTS(role, content, chat_id) values('user', 'What is my Name?', 'chat-2');
+insert into CHAT_CONTENTS(role, content, chat_id) values('assistant', 'Your Name is Hrishikesh Rajbhar😊', 'chat-2');
+
+insert into CHAT_CONTENTS(role, content, chat_id) values('user', 'What is my Surname?', 'chat-2');
+insert into CHAT_CONTENTS(role, content, chat_id) values('assistant', 'Your Surname is Rajbhar😊', 'chat-2');
+
+insert into CHAT_CONTENTS(role, content, chat_id) values('user', 'What is my Age?', 'chat-3');
+insert into CHAT_CONTENTS(role, content, chat_id) values('assistant', 'Your Age is 18', 'chat-3');
+
+insert into CHAT_CONTENTS(role, content, chat_id) values('user', 'What is my Age?', 'chat-3');
+insert into CHAT_CONTENTS(role, content, chat_id) values('assistant', 'Your Age is 18', 'chat-3');
+
+select * from chat_contents;
+
+delete from CHAT_CONTENTS;
+
+-- Retrive the Chat_Title of a User
+select user_details.user_id, chat_info.chat_title from chat_info
+inner join user_details on user_details.user_id = chat_info.user_id;
+
+-- Retrieve the Chat Msg of the user based on the Chat_id
+select chat_info.user_id as U_ID, chat_info.chat_title, chat_contents.role, chat_contents.content from user_details
+inner join chat_info on chat_info.user_id = user_details.user_id
+inner join chat_contents on chat_contents.chat_id = chat_info.chat_id
+where chat_info.user_id = 2
+;
