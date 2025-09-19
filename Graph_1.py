@@ -54,8 +54,7 @@ class GraphTree:
             if (n>=0):
                 for t in range(0, len(self.nodelist)):
                     if self.matrix[n][t] == 1 and self.nodelist[t].status == 1:
-                        # templist.append(self.nodelist[t])
-                        templist.insert(0, self.nodelist[t])
+                        templist.append(self.nodelist[t])
                         self.nodelist[t].status = 2
         
         print(f"BFS Traversal: {traversal}")
@@ -76,7 +75,7 @@ class GraphTree:
             if (n>=0):
                 for t in range(0, len(self.nodelist)):
                     if self.matrix[n][t] == 1 and self.nodelist[t].status == 1:
-                        templist.append(self.nodelist[t])
+                        templist.insert(0, self.nodelist[t])
                         self.nodelist[t].status = 2
         
         print(f"DFS Traversal: {traversal}")
