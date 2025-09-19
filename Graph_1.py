@@ -1,8 +1,9 @@
 class Node:
     def __init__(self, data):
         self.data = data
+        self.status = 0
 
-class GraphImp:
+class GraphTree:
     def __init__(self):
         self.nodelist = []
         self.matrix = []
@@ -29,15 +30,58 @@ class GraphImp:
         if row == -1 or column == -1:
             print("Invalid Edge. PLease break your edging streak")
         else:
-            weight = int(input("Enter the Weight: "))
-            self.matrix[row][column] = weight
+            # weight = int(input("Enter the Weight: "))
+            self.matrix[row][column] = 1
     
     def printGraph(self):
         for i in range(len(self.nodelist)):
             # print(i.data)
             print(self.matrix[i])
+
+    def bfs(self):
+        templist = []
+        for i in range(len(self.nodelist)):
+            self.nodelist[i].status = 1
+        templist.append(self.nodelist[0])
+        self.nodelist[0].status = 2
+        traversal = ""
+        while(len(templist)) != 0:
+            node = templist[0]
+            templist.remove(node)
+            traversal += node.data
+            node.status = 3
+            n = self.nodelist.index(node)
+            if (n>=0):
+                for t in range(0, len(self.nodelist)):
+                    if self.matrix[n][t] == 1 and self.nodelist[t].status == 1:
+                        # templist.append(self.nodelist[t])
+                        templist.insert(0, self.nodelist[t])
+                        self.nodelist[t].status = 2
         
-g1 = GraphImp()
+        print(f"BFS Traversal: {traversal}")
+
+    def dfs(self):
+        templist = []
+        for i in range(len(self.nodelist)):
+            self.nodelist[i].status = 1
+        templist.append(self.nodelist[0])
+        self.nodelist[0].status = 2
+        traversal = ""
+        while(len(templist)) != 0:
+            node = templist[0]
+            templist.remove(node)
+            traversal += node.data
+            node.status = 3
+            n = self.nodelist.index(node)
+            if (n>=0):
+                for t in range(0, len(self.nodelist)):
+                    if self.matrix[n][t] == 1 and self.nodelist[t].status == 1:
+                        templist.append(self.nodelist[t])
+                        self.nodelist[t].status = 2
+        
+        print(f"DFS Traversal: {traversal}")
+        
+g1 = GraphTree()
 g1.addNode()
 
 print()
@@ -47,4 +91,6 @@ edgeNo = int(input("Enter no of Edges: "))
 for i in range(edgeNo):
     edge = input("Enter Edge: ")
     g1.addEdge(edge)
-g1.printGraph()
+# g1.printGraph()
+
+g1.bfs()
